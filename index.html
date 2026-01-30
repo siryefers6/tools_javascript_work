@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar PDFs</title>
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+  <h2>Subir PDFs</h2>
+  <input type="file" id="pdfInput" accept="application/pdf" multiple><br><br>
+  <button onclick="procesarPDF(/3\d{7}/, 'Brumai')">Colocar Números Brumai</button>
+  <button onclick="procesarPDF(/\d{4,10}/, 'Codelco')">Colocar Id Codelco</button>
+
+  <script>
+    async function procesarPDF(regex, tipo) {
+      const files = document.getElementById("pdfInput").files;
+      if (!files.length) return alert("Sube al menos un PDF.");
+
+      for (const file of files) {
+        const match = file.name.match(regex);
+        if (!match) { alert(`El archivo ${file.name} no contiene un número válido.`); continue; }
+        const numero = match[0];
+
+        const pdfDoc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
+        const page = pdfDoc.getPages()[0];
+        const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+
+        // Definir tamaño de fuente según tipo
+        let size, text;
+        if (tipo === 'Brumai') {
+          size = 10;
+          text = String(numero);
+        } else {
+          size = 17;
+          text = String(numero);
+        }
+
+        const w = font.widthOfTextAtSize(text, size);
+        const h = size;
+
+        // Márgenes
+        const margin = 10;
+        const pageWidth = page.getWidth();
+        const pageHeight = page.getHeight();
+
+        // Coordenadas: esquina superior derecha con margen
+        const rectX = pageWidth - w - 20;
+        const rectY = pageHeight - h - margin - 6;
+        const textX = rectX + 5;
+        const textY = rectY + 3;
+
+        // Dibujar rectángulo verde fosforescente solo para Codelco
+        if (tipo === 'Codelco') {
+          page.drawRectangle({
+            x: rectX,
+            y: rectY,
+            width: w + 10,
+            height: h + 6,
+            color: PDFLib.rgb(0, 1, 0)
+          });
+        }
+
+        // Dibujar texto encima
+        page.drawText(text, {
+          x: textX,
+          y: textY,
+          size,
+          font,
+          color: PDFLib.rgb(0, 0, 0)
+        });
+
+        // Descargar PDF modificado
+        const blob = new Blob([await pdfDoc.save()], { type:"application/pdf" });
+        const link = Object.assign(document.createElement("a"), {
+          href: URL.createObjectURL(blob),
+          download: `pdf_${tipo}_${numero}.pdf`
+        });
+        link.click();
+      }
+    }
+  </script>
+</body>
+</html>

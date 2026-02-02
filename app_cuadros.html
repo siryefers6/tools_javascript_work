@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro Cuadros</title>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  necesito un formulario para registrar un cliente, debe tener nombre completo, número de teléfono. El formulario debe ser estilizado con Tailwind CSS y debe incluir validación básica para cada campo.
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center">Registro de Cliente</h2>
         <form id="registroForm" class="space-y-4">
@@ -25,22 +25,21 @@
         </form>
     </div>
 
-    <script>
-        document.getElementById('registroForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            let isValid = true;
+    quiero que al registrar el formulario se envie una peticion post a la ruta http://app.siryefers.org/api/registro_cliente con los datos del formulario en formato json y que abajo aparesca los clientes registrados, ademas que cuando se habra la aplicacion de ese mismo endpoint pero /listar_clientes muestre los clientes registrados en una tabla debajo del formulario
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-2xl mt-8">
+        <h2 class="text-2xl font-bold mb-6 text-center">Clientes Registrados</h2>
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre Completo</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número de Teléfono</th>
+                </tr>
+            </thead>
+            <tbody id="clientesTableBody" class="bg-white divide-y divide-gray-200">
+                <!-- Clientes registrados aparecerán aquí -->
+            </tbody>
+        </table>
+    </div>
 
-            const nombreInput = document.getElementById('nombre');
-            const telefonoInput = document.getElementById('telefono');
-            const nombreError = document.getElementById('nombreError');
-            const telefonoError = document.getElementById('telefonoError');
-
-            // Validar nombre
-            if (nombreInput.value.trim() === '') {
-                nombreError.classList.remove('hidden');
-                isValid = false;
-            } else {
-                nombreError.classList.add('hidden');
 </body>
 </html>

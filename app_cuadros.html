@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Cuadros</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  necesito un formulario para registrar un cliente, debe tener nombre completo, número de teléfono. El formulario debe ser estilizado con Tailwind CSS y debe incluir validación básica para cada campo.
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-6 text-center">Registro de Cliente</h2>
+        <form id="registroForm" class="space-y-4">
+            <div>
+                <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <p id="nombreError" class="text-red-500 text-sm mt-1 hidden">Por favor ingrese su nombre completo.</p>
+            </div>
+            <div>
+                <label for="telefono" class="block text-sm font-medium text-gray-700">Número de Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" pattern="[0-9]{10}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <p id="telefonoError" class="text-red-500 text-sm mt-1 hidden">Por favor ingrese un número de teléfono válido de 10 dígitos.</p>
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Registrar</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let isValid = true;
+
+            const nombreInput = document.getElementById('nombre');
+            const telefonoInput = document.getElementById('telefono');
+            const nombreError = document.getElementById('nombreError');
+            const telefonoError = document.getElementById('telefonoError');
+
+            // Validar nombre
+            if (nombreInput.value.trim() === '') {
+                nombreError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                nombreError.classList.add('hidden');
+</body>
+</html>

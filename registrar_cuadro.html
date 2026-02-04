@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro Cuadros</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <div class="flex justify-center my-6">
+      <a
+        href="index.html"
+        class="bg-gray-600 text-white px-5 py-3 rounded-lg hover:bg-gray-700 transition duration-300 shadow-md"
+        >← Volver a la Página Principal</a
+      >
+    </div>
+    <div
+      class="flex flex-col mb-4 max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg"
+    >
+      <h1 class="text-4xl font-extrabold text-center my-4 text-gray-800">
+        Registrar Cuadro 🏞️
+      </h1>
+      <form action="" class="flex flex-col space-y-3">
+        <h2 class="text-2xl font-semibold text-gray-700">Obra</h2>
+
+        <label for="titulo">Título del Cuadro</label>
+        <input
+          type="text"
+          id="titulo"
+          name="titulo"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          name="descripcion"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full h-24"
+        ></textarea>
+
+        <label for="tamanio">Tamaño (cm)</label>
+        <input
+          type="text"
+          id="tamanio"
+          name="tamanio"
+          required
+          pattern="[X0-9x]{3,7}"
+          placeholder="Ejemplo: 120X80"
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="materiales">Materiales utilizados</label>
+        <input
+          type="text"
+          id="materiales"
+          name="materiales"
+          placeholder="lienzo, óleo, etc."
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="Categoría">Categoría</label>
+        <select
+          id="categoria"
+          name="categoria"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        >
+          <option value="" disabled selected>
+            -- Seleccione una Categoría --
+          </option>
+          <option value="oleo">🎨 OLEO</option>
+          <option value="lapiz">✏️ LAPIZ</option>
+          <option value="acrilico">🖌️ ACRILICO</option>
+          <option value="lapiz_colores">🌈 LAPIZ DE COLORES</option>
+        </select>
+
+        <div class="flex space-x-4">
+          <div class="w-1/2">
+            <label for="fecha_inicio" class="block text-gray-700 mb-1"
+              >Fecha de Inicio</label
+            >
+            <input
+              type="date"
+              id="fecha_inicio"
+              name="fecha_inicio"
+              required
+              class="border border-gray-300 p-3 rounded-lg w-full"
+            />
+          </div>
+          <div class="w-1/2">
+            <label for="fecha_finalizacion" class="block text-gray-700 mb-1"
+              >Fecha de Finalización</label
+            >
+            <input
+              type="date"
+              id="fecha_finalizacion"
+              name="fecha_finalizacion"
+              required
+              class="border border-gray-300 p-3 rounded-lg w-full"
+            />
+          </div>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-700">Valoración</h2>
+
+        <label for="tiempo_invertido">Tiempo Invertido (horas)</label>
+        <input
+          type="number"
+          id="tiempo_invertido"
+          name="tiempo_invertido"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="detalle">Detalle</label>
+        <select
+          id="detalle"
+          name="detalle"
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        >
+          <option value="" disabled selected>Seleccione un nivel (1-5)</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+
+        <label for="creatividad">Creatividad</label>
+        <select
+          id="creatividad"
+          name="creatividad"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        >
+          <option value="" disabled selected>Seleccione un nivel (1-5)</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+
+        <label for="complejidad_tecnica">Complejidad Técnica</label>
+        <select
+          id="complejidad_tecnica"
+          name="complejidad_tecnica"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        >
+          <option value="" disabled selected>Seleccione un nivel (1-5)</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+
+        <h2 class="text-2xl font-semibold text-gray-700">Precio</h2>
+
+        <label for="valor_hora">Valor por hora $</label>
+        <input
+          type="number"
+          id="valor_hora"
+          name="valor_hora"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="con_marco">¿Con Marco?</label>
+        <select
+          id="con_marco"
+          name="con_marco"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        >
+          <option value="si">Sí</option>
+          <option value="no">No</option>
+        </select>
+
+        <label for="valor_marco">Valor Marco $</label>
+        <input
+          type="number"
+          id="valor_marco"
+          name="valor_marco"
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="valor_materiales">Costo Otros Materiales $</label>
+        <input
+          type="number"
+          id="valor_materiales"
+          name="valor_materiales"
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="valor_dibujo">Valor Dibujo $</label>
+        <input
+          type="number"
+          id="valor_dibujo"
+          name="valor_dibujo"
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="valor_sugerido">Valor sugerido $</label>
+        <input
+          type="number"
+          id="valor_sugerido"
+          name="valor_sugerido"
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="valor_final">Valor final $</label>
+        <input
+          type="number"
+          id="valor_final"
+          name="valor_final"
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+        <button
+          type="submit"
+          class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md"
+        >
+          Registrar
+        </button>
+      </form>
+    </div>
+    <script>
+      const valorDibujo = document.getElementById("valor_dibujo");
+      const valorMateriales = document.getElementById("valor_materiales");
+      const valorMarco = document.getElementById("valor_marco");
+      const valorHora = document.getElementById("valor_hora");
+      const tiempoInvertido = document.getElementById("tiempo_invertido");
+      const valorSugerido = document.getElementById("valor_sugerido");
+      const valorFinal = document.getElementById("valor_final");
+
+      function calcularValores() {
+        const dibujo = parseFloat(valorDibujo.value) || 0;
+        const materiales = parseFloat(valorMateriales.value) || 0;
+        const marco = parseFloat(valorMarco.value) || 0;
+        const hora = parseFloat(valorHora.value) || 0;
+        const tiempo = parseFloat(tiempoInvertido.value) || 0;
+
+        const sugerido = dibujo + materiales + marco + hora * tiempo;
+        valorSugerido.value = sugerido.toFixed(0);
+        valorFinal.value = sugerido.toFixed(0); // Aquí puedes agregar más lógica si el valor final difiere del sugerido
+      }
+
+      valorDibujo.addEventListener("input", calcularValores);
+      valorMateriales.addEventListener("input", calcularValores);
+      valorMarco.addEventListener("input", calcularValores);
+      valorHora.addEventListener("input", calcularValores);
+      tiempoInvertido.addEventListener("input", calcularValores);
+    </script>
+  </body>
+</html>

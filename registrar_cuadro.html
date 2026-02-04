@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro Cuadros</title>
+    <script src="https://cdn.jsdelivr.net/npm/dexie@4.0.1/dist/dexie.min.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -23,7 +24,35 @@
       <h1 class="text-4xl font-extrabold text-center my-4 text-gray-800">
         Registrar Cuadro 🏞️
       </h1>
-      <form action="" class="flex flex-col space-y-3">
+      <form action="" id="clienteForm" class="flex flex-col space-y-3">
+        <h2 class="text-2xl font-semibold text-gray-700">Datos Cliente</h2>
+        <label for="nombres">Nombres</label>
+        <input
+          type="text"
+          id="nombres"
+          name="nombres"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="apellidos">Apellidos</label>
+        <input
+          type="text"
+          id="apellidos"
+          name="apellidos"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
+        <label for="whatsapp">Whatsapp</label>
+        <input
+          type="text"
+          id="whatsapp"
+          name="whatsapp"
+          required
+          class="border border-gray-300 p-3 rounded-lg w-full"
+        />
+
         <h2 class="text-2xl font-semibold text-gray-700">Obra</h2>
 
         <label for="titulo">Título del Cuadro</label>
@@ -54,7 +83,7 @@
           class="border border-gray-300 p-3 rounded-lg w-full"
         />
 
-        <label for="materiales">Materiales utilizados</label>
+        <label for="materiales">Materiales Utilizados</label>
         <input
           type="text"
           id="materiales"
@@ -82,7 +111,7 @@
         <div class="flex space-x-4">
           <div class="w-1/2">
             <label for="fecha_inicio" class="block text-gray-700 mb-1"
-              >Fecha de Inicio</label
+              >Fecha Inicio</label
             >
             <input
               type="date"
@@ -94,7 +123,7 @@
           </div>
           <div class="w-1/2">
             <label for="fecha_finalizacion" class="block text-gray-700 mb-1"
-              >Fecha de Finalización</label
+              >Fecha Finalización</label
             >
             <input
               type="date"
@@ -122,7 +151,7 @@
           name="detalle"
           class="border border-gray-300 p-3 rounded-lg w-full"
         >
-          <option value="" disabled selected>Seleccione un nivel (1-5)</option>
+          <option value="" disabled selected>Seleccione un Nivel (1-5)</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -137,7 +166,7 @@
           required
           class="border border-gray-300 p-3 rounded-lg w-full"
         >
-          <option value="" disabled selected>Seleccione un nivel (1-5)</option>
+          <option value="" disabled selected>Seleccione un Nivel (1-5)</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -152,7 +181,7 @@
           required
           class="border border-gray-300 p-3 rounded-lg w-full"
         >
-          <option value="" disabled selected>Seleccione un nivel (1-5)</option>
+          <option value="" disabled selected>Seleccione un Nivel (1-5)</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -162,7 +191,7 @@
 
         <h2 class="text-2xl font-semibold text-gray-700">Precio</h2>
 
-        <label for="valor_hora">Valor por hora $</label>
+        <label for="valor_hora">Valor Hora $</label>
         <input
           type="number"
           id="valor_hora"
@@ -170,17 +199,6 @@
           required
           class="border border-gray-300 p-3 rounded-lg w-full"
         />
-
-        <label for="con_marco">¿Con Marco?</label>
-        <select
-          id="con_marco"
-          name="con_marco"
-          required
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        >
-          <option value="si">Sí</option>
-          <option value="no">No</option>
-        </select>
 
         <label for="valor_marco">Valor Marco $</label>
         <input
@@ -206,7 +224,7 @@
           class="border border-gray-300 p-3 rounded-lg w-full"
         />
 
-        <label for="valor_sugerido">Valor sugerido $</label>
+        <label for="valor_sugerido">Valor Sugerido $</label>
         <input
           type="number"
           id="valor_sugerido"
@@ -214,13 +232,14 @@
           class="border border-gray-300 p-3 rounded-lg w-full"
         />
 
-        <label for="valor_final">Valor final $</label>
+        <label for="valor_final">Valor Final $</label>
         <input
           type="number"
           id="valor_final"
           name="valor_final"
           class="border border-gray-300 p-3 rounded-lg w-full"
         />
+
         <button
           type="submit"
           class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md"
@@ -255,6 +274,185 @@
       valorMarco.addEventListener("input", calcularValores);
       valorHora.addEventListener("input", calcularValores);
       tiempoInvertido.addEventListener("input", calcularValores);
+    </script>
+
+    <script>
+      // 1. Inicializar base de datos local con Dexie
+      const db = new Dexie("ClientesDB");
+      db.version(1).stores({
+        cuadros:
+          "++id,nombres,apellidos,whatsapp,titulo,descripcion,tamanio,materiales,categoria,fecha_inicio,fecha_finalizacion,tiempo_invertido,detalle,creatividad,complejidad_tecnica,valor_hora,valor_marco,valor_materiales,valor_dibujo,valor_sugerido,valor_final,sincronizado",
+      });
+
+      // 2. Guardar cuadro en local (si existe título, actualizar)
+      document
+        .querySelector("form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          let nombres = document.getElementById("nombres").value;
+          nombres = nombres.toUpperCase();
+          nombres = nombres
+            .replace(/Á/g, "A")
+            .replace(/É/g, "E")
+            .replace(/Í/g, "I")
+            .replace(/Ó/g, "O")
+            .replace(/Ú/g, "U");
+          let apellidos = document.getElementById("apellidos").value;
+          apellidos = apellidos.toUpperCase();
+          apellidos = apellidos
+            .replace(/Á/g, "A")
+            .replace(/É/g, "E")
+            .replace(/Í/g, "I")
+            .replace(/Ó/g, "O")
+            .replace(/Ú/g, "U");
+          let whatsapp = document.getElementById("whatsapp").value;
+          let titulo = document.getElementById("titulo").value;
+          titulo = titulo.toUpperCase();
+          titulo = titulo
+            .replace(/Á/g, "A")
+            .replace(/É/g, "E")
+            .replace(/Í/g, "I")
+            .replace(/Ó/g, "O")
+            .replace(/Ú/g, "U");
+          let descripcion = document.getElementById("descripcion").value;
+          let tamanio = document.getElementById("tamanio").value;
+          let materiales = document.getElementById("materiales").value;
+          let categoria = document.getElementById("categoria").value;
+          let fecha_inicio = document.getElementById("fecha_inicio").value;
+          let fecha_finalizacion =
+            document.getElementById("fecha_finalizacion").value;
+          let tiempo_invertido = parseFloat(
+            document.getElementById("tiempo_invertido").value,
+          );
+          let detalle = parseInt(document.getElementById("detalle").value);
+          let creatividad = parseInt(
+            document.getElementById("creatividad").value,
+          );
+          let complejidad_tecnica = parseInt(
+            document.getElementById("complejidad_tecnica").value,
+          );
+          let valor_hora = parseFloat(
+            document.getElementById("valor_hora").value,
+          );
+          let valor_marco =
+            parseFloat(document.getElementById("valor_marco").value) || 0;
+          let valor_materiales =
+            parseFloat(document.getElementById("valor_materiales").value) || 0;
+          let valor_dibujo =
+            parseFloat(document.getElementById("valor_dibujo").value) || 0;
+          let valor_sugerido =
+            parseFloat(document.getElementById("valor_sugerido").value) || 0;
+          let valor_final =
+            parseFloat(document.getElementById("valor_final").value) || 0;
+          // Buscar si ya existe un cuadro con ese título
+          const existente = await db.cuadros
+            .where("titulo")
+            .equals(titulo)
+            .first();
+          if (existente) {
+            // Actualizar datos existentes
+            await db.cuadros.update(existente.id, {
+              nombres,
+              apellidos,
+              whatsapp,
+              titulo,
+              descripcion,
+              tamanio,
+              materiales,
+              categoria,
+              fecha_inicio,
+              fecha_finalizacion,
+              tiempo_invertido,
+              detalle,
+              creatividad,
+              complejidad_tecnica,
+              valor_hora,
+              valor_marco,
+              valor_materiales,
+              valor_dibujo,
+              valor_sugerido,
+              valor_final,
+              sincronizado: false,
+            });
+            alert("Cuadro actualizado localmente");
+          } else {
+            // Insertar nuevo cuadro
+            await db.cuadros.add({
+              nombres,
+              apellidos,
+              whatsapp,
+              titulo,
+              descripcion,
+              tamanio,
+              materiales,
+              categoria,
+              fecha_inicio,
+              fecha_finalizacion,
+              tiempo_invertido,
+              detalle,
+              creatividad,
+              complejidad_tecnica,
+              valor_hora,
+              valor_marco,
+              valor_materiales,
+              valor_dibujo,
+              valor_sugerido,
+              valor_final,
+              sincronizado: false,
+            });
+            alert("Cuadro guardado localmente");
+          }
+          e.target.reset();
+          // Intentar sincronizar inmediatamente si hay conexión
+          if (navigator.onLine) {
+            sincronizar();
+          }
+        });
+      // 3. Función de sincronización con el servidor
+      async function sincronizar() {
+        // Obtener todos los cuadros pendientes
+        const cuadrosPendientes = await db.cuadros
+          .where("sincronizado")
+          .equals(false)
+          .toArray();
+        for (const cuadro of cuadrosPendientes) {
+          try {
+            // Enviar cuadro a la API
+            const res = await fetch("https://mi-api.com/cuadros", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(cuadro),
+            });
+            if (res.ok) {
+              // Marcar como sincronizado en la base local
+              await db.cuadros.update(cuadro.id, { sincronizado: true });
+              console.log(`Cuadro ${cuadro.titulo} sincronizado`);
+            } else {
+              console.log("Error al sincronizar con API");
+            }
+          } catch (err) {
+            console.log("Sin conexión, se intentará más tarde");
+            return; // salir para que el intervalo vuelva a intentarlo
+          }
+        }
+      }
+      // 4. Al cargar la página, intentar sincronizar
+      window.onload = () => {
+        if (navigator.onLine) {
+          sincronizar();
+        }
+      };
+      // 5. Detectar cuando vuelve la conexión
+      window.addEventListener("online", () => {
+        console.log("Conexión restaurada, sincronizando...");
+        sincronizar();
+      });
+      // 6. Reintentos automáticos cada 1 minuto
+      setInterval(() => {
+        if (navigator.onLine) {
+          sincronizar();
+        }
+      }, 60000);
     </script>
   </body>
 </html>

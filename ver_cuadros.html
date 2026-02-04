@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lista de Cuadros</title>
+    <!-- Dexie.js desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/dexie@4.0.1/dist/dexie.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <div class="flex justify-center my-6">
+      <a
+        href="index.html"
+        class="bg-gray-600 text-white px-5 py-3 rounded-lg hover:bg-gray-700 transition duration-300 shadow-md"
+        >← Volver a la Página Principal</a
+      >
+    </div>
+    <div
+      class="flex flex-col mb-4 max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg"
+    >
+      <h1 class="text-4xl font-extrabold text-center my-4 text-gray-800">
+        Cuadros Registrados 🖼️
+      </h1>
+      <!-- Botón para refrescar la lista -->
+      <div class="flex justify-end mb-4">
+        <button
+          onclick="mostrarCuadros()"
+          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 shadow-md"
+        >
+          Actualizar lista
+        </button>
+      </div>
+      <!-- Tabla donde se mostrarán los cuadros -->
+      <div class="overflow-x-auto">
+        <table
+          id="tablaCuadros"
+          class="min-w-full bg-white border border-gray-300"
+        >
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="py-3 px-6 border-b border-gray-300 text-left">ID</th>
+              <th class="py-3 px-6 border-b border-gray-300 text-left">
+                Título
+              </th>
+              <th class="py-3 px-6 border-b border-gray-300 text-left">
+                Tamaño (cm)
+              </th>
+              <th class="py-3 px-6 border-b border-gray-300 text-left">
+                Categoría
+              </th>
+              <th class="py-3 px-6 border-b border-gray-300 text-left">
+                Valor Final
+              </th>
+              <th class="py-3 px-6 border-b border-gray-300 text-left">
+                Nombre Cliente
+              </th>
+              <th class="py-3 px-6 border-b border-gray-300 text-left">
+                Contacto
+              </th>
+              <th class="py-3 px-6 border-b border-gray-300 text-left">
+                Estado
+              </th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+      // 1. Inicializar base de datos local con Dexie
+      const db = new Dexie("ClientesDB");
+      db.version(1).stores({
+        cuadros:
+          "++id,titulo,tamanio,categoria,valor_final,nombres,apellidos,whatsapp,sincronizado",
+      });
+      // 2. Función para mostrar cuadros en la tabla
+      async function mostrarCuadros() {
+        const cuadros = await db.cuadros.toArray();
+        const tbody = document.querySelector("#tablaCuadros tbody");
+        tbody.innerHTML = ""; // Limpiar tabla antes de agregar filas
+        cuadros.forEach((cuadro) => {
+          const fila = document.createElement("tr");
+          fila.innerHTML = `
+            <td class="py-3 px-6 border-b border-gray-300">${cuadro.id}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${cuadro.titulo}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${cuadro.tamanio}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${cuadro.categoria}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${cuadro.valor_final}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${cuadro.nombres + " " + cuadro.apellidos}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${cuadro.whatsapp}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${
+              cuadro.sincronizado ? "Sincronizado" : "No sincronizado"
+            }</td>
+          `;
+          tbody.appendChild(fila);
+        });
+      }
+      // Mostrar cuadros al cargar la página
+      window.onload = mostrarCuadros;
+    </script>
+  </body>
+</html>

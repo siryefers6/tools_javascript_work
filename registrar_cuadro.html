@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro Cuadros</title>
+    <title>Registrar Cuadro</title>
     <script src="dexie.min.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
@@ -15,449 +15,480 @@
       <a
         href="index.html"
         class="bg-gray-600 text-white px-5 py-3 rounded-lg hover:bg-gray-700 transition duration-300 shadow-md"
-        >← Volver a la Página Principal</a
       >
+        ← Volver a la Página Principal
+      </a>
     </div>
-    <div
-      class="flex flex-col mb-4 max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg"
-    >
-      <h1 class="text-4xl font-extrabold text-center my-4 text-gray-800">
-        Registrar Cuadro 🏞️
-      </h1>
-      <form action="" id="clienteForm" class="flex flex-col space-y-3">
-        <h2 class="text-2xl font-semibold text-gray-700">Datos Cliente</h2>
-        <label for="nombres">Nombres</label>
-        <input
-          type="text"
-          id="nombres"
-          name="nombres"
-          required
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
 
-        <label for="apellidos">Apellidos</label>
-        <input
-          type="text"
-          id="apellidos"
-          name="apellidos"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
-
-        <label for="whatsapp">Whatsapp</label>
-        <input
-          type="text"
-          id="whatsapp"
-          name="whatsapp"
-          required
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
-
-        <h2 class="text-2xl font-semibold text-gray-700">Obra</h2>
-
-        <label for="titulo">Título del Cuadro</label>
-        <input
-          type="text"
-          id="titulo"
-          name="titulo"
-          required
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
-
-        <label for="descripcion">Descripción</label>
-        <textarea
-          id="descripcion"
-          name="descripcion"
-          class="border border-gray-300 p-3 rounded-lg w-full h-24"
-        ></textarea>
-
-        <label for="tamanio">Tamaño (cm)</label>
-        <input
-          type="text"
-          id="tamanio"
-          name="tamanio"
-          required
-          pattern="[X0-9x]{3,7}"
-          placeholder="Ejemplo: 120X80"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
-
-        <label for="materiales">Materiales Utilizados</label>
-        <input
-          type="text"
-          id="materiales"
-          name="materiales"
-          placeholder="lienzo, óleo, etc."
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
-
-        <label for="Categoría">Categoría</label>
-        <select
-          id="categoria"
-          name="categoria"
-          required
-          class="border border-gray-300 p-3 rounded-lg w-full"
+    <div class="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div class="flex items-center justify-between mb-4">
+        <h1 class="text-3xl font-bold text-gray-800">Registrar / Editar Cuadro</h1>
+        <button
+          id="btnNuevo"
+          type="button"
+          class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
         >
-          <option value="" disabled selected>
-            -- Seleccione una Categoría --
-          </option>
-          <option value="oleo">🎨 OLEO</option>
-          <option value="lapiz">✏️ LAPIZ</option>
-          <option value="acrilico">🖌️ ACRILICO</option>
-          <option value="lapiz_colores">🌈 LAPIZ DE COLORES</option>
-        </select>
+          Nuevo
+        </button>
+      </div>
 
-        <div class="flex space-x-4">
-          <div class="w-1/2">
-            <label for="fecha_inicio" class="block text-gray-700 mb-1"
-              >Fecha Inicio</label
-            >
-            <input
-              type="date"
-              id="fecha_inicio"
-              name="fecha_inicio"
-              required
-              class="border border-gray-300 p-3 rounded-lg w-full"
-            />
-          </div>
-          <div class="w-1/2">
-            <label for="fecha_finalizacion" class="block text-gray-700 mb-1"
-              >Fecha Finalización</label
-            >
-            <input
-              type="date"
-              id="fecha_finalizacion"
-              name="fecha_finalizacion"
-              class="border border-gray-300 p-3 rounded-lg w-full"
-            />
+      <form id="cuadroForm" class="flex flex-col space-y-4">
+        <input type="hidden" id="cuadroId" />
+
+        <div class="border-b pb-4">
+          <h2 class="text-xl font-semibold text-gray-700 mb-3">Cliente</h2>
+
+          <label for="nombres" class="block">Nombres</label>
+          <input
+            type="text"
+            id="nombres"
+            required
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
+
+          <label for="apellidos" class="block mt-3">Apellidos</label>
+          <input
+            type="text"
+            id="apellidos"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
+
+          <label for="whatsapp" class="block mt-3">Whatsapp</label>
+          <input
+            type="text"
+            id="whatsapp"
+            required
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
+        </div>
+
+        <div class="border-b pb-4">
+          <h2 class="text-xl font-semibold text-gray-700 mb-3">Obra</h2>
+
+          <label for="titulo" class="block">Titulo del Cuadro</label>
+          <input
+            type="text"
+            id="titulo"
+            required
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
+
+          <label for="descripcion" class="block mt-3">Descripcion</label>
+          <textarea
+            id="descripcion"
+            class="border border-gray-300 p-3 rounded-lg w-full h-24"
+          ></textarea>
+
+          <label for="tamanio" class="block mt-3">Tamano (cm)</label>
+          <input
+            type="text"
+            id="tamanio"
+            required
+            placeholder="Ejemplo: 120X80"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
+
+          <label for="materiales" class="block mt-3">Materiales</label>
+          <input
+            type="text"
+            id="materiales"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
+
+          <label for="categoria" class="block mt-3">Categoria</label>
+          <select
+            id="categoria"
+            required
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          >
+            <option value="" disabled selected>Seleccione una categoria</option>
+            <option value="oleo">Oleo</option>
+            <option value="lapiz">Lapiz</option>
+            <option value="acrilico">Acrilico</option>
+            <option value="lapiz_colores">Lapiz de colores</option>
+          </select>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+            <div>
+              <label for="fecha_inicio" class="block">Fecha inicio</label>
+              <input
+                type="date"
+                id="fecha_inicio"
+                required
+                class="border border-gray-300 p-3 rounded-lg w-full"
+              />
+            </div>
+            <div>
+              <label for="fecha_finalizacion" class="block">Fecha finalizacion</label>
+              <input
+                type="date"
+                id="fecha_finalizacion"
+                class="border border-gray-300 p-3 rounded-lg w-full"
+              />
+            </div>
           </div>
         </div>
-        <h2 class="text-2xl font-semibold text-gray-700">Valoración</h2>
 
-        <label for="tiempo_invertido">Tiempo Invertido (horas)</label>
-        <input
-          type="number"
-          id="tiempo_invertido"
-          name="tiempo_invertido"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
+        <div class="border-b pb-4">
+          <h2 class="text-xl font-semibold text-gray-700 mb-3">Valoracion</h2>
 
-        <label for="detalle">Detalle</label>
-        <select
-          id="detalle"
-          name="detalle"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        >
-          <option value="" disabled selected>Seleccione un Nivel (1-5)</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
+          <label for="tiempo_invertido" class="block">Tiempo invertido (horas)</label>
+          <input
+            type="number"
+            id="tiempo_invertido"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
 
-        <label for="creatividad">Creatividad</label>
-        <select
-          id="creatividad"
-          name="creatividad"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        >
-          <option value="" disabled selected>Seleccione un Nivel (1-5)</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
+          <label for="detalle" class="block mt-3">Detalle (1-5)</label>
+          <select id="detalle" class="border border-gray-300 p-3 rounded-lg w-full">
+            <option value="" disabled selected>Seleccione un nivel</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
 
-        <label for="complejidad_tecnica">Complejidad Técnica</label>
-        <select
-          id="complejidad_tecnica"
-          name="complejidad_tecnica"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        >
-          <option value="" disabled selected>Seleccione un Nivel (1-5)</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
+          <label for="creatividad" class="block mt-3">Creatividad (1-5)</label>
+          <select
+            id="creatividad"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          >
+            <option value="" disabled selected>Seleccione un nivel</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
 
-        <h2 class="text-2xl font-semibold text-gray-700">Precio</h2>
+          <label for="complejidad_tecnica" class="block mt-3">
+            Complejidad tecnica (1-5)
+          </label>
+          <select
+            id="complejidad_tecnica"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          >
+            <option value="" disabled selected>Seleccione un nivel</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
 
-        <label for="valor_hora">Valor Hora $</label>
-        <input
-          type="number"
-          id="valor_hora"
-          name="valor_hora"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
+        <div>
+          <h2 class="text-xl font-semibold text-gray-700 mb-3">Precio</h2>
 
-        <label for="valor_marco">Valor Marco $</label>
-        <input
-          type="number"
-          id="valor_marco"
-          name="valor_marco"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
+          <label for="valor_hora" class="block">Valor hora $</label>
+          <input
+            type="number"
+            id="valor_hora"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
 
-        <label for="valor_materiales">Costo Otros Materiales $</label>
-        <input
-          type="number"
-          id="valor_materiales"
-          name="valor_materiales"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
+          <label for="valor_marco" class="block mt-3">Valor marco $</label>
+          <input
+            type="number"
+            id="valor_marco"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
 
-        <label for="valor_dibujo">Valor Dibujo $</label>
-        <input
-          type="number"
-          id="valor_dibujo"
-          name="valor_dibujo"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
+          <label for="valor_materiales" class="block mt-3">
+            Costo otros materiales $
+          </label>
+          <input
+            type="number"
+            id="valor_materiales"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
 
-        <label for="valor_sugerido">Valor Sugerido $</label>
-        <input
-          type="number"
-          id="valor_sugerido"
-          name="valor_sugerido"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
+          <label for="valor_dibujo" class="block mt-3">Valor dibujo $</label>
+          <input
+            type="number"
+            id="valor_dibujo"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
 
-        <label for="valor_final">Valor Final $</label>
-        <input
-          type="number"
-          id="valor_final"
-          name="valor_final"
-          class="border border-gray-300 p-3 rounded-lg w-full"
-        />
+          <label for="valor_sugerido" class="block mt-3">Valor sugerido $</label>
+          <input
+            type="number"
+            id="valor_sugerido"
+            readonly
+            class="border border-gray-300 p-3 rounded-lg w-full bg-gray-100"
+          />
+
+          <label for="valor_final" class="block mt-3">Valor final $</label>
+          <input
+            type="number"
+            id="valor_final"
+            class="border border-gray-300 p-3 rounded-lg w-full"
+          />
+        </div>
 
         <button
+          id="btnGuardar"
           type="submit"
           class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md"
         >
-          Registrar
+          Guardar
         </button>
       </form>
     </div>
-    <script>
-      const valorDibujo = document.getElementById("valor_dibujo");
-      const valorMateriales = document.getElementById("valor_materiales");
-      const valorMarco = document.getElementById("valor_marco");
-      const valorHora = document.getElementById("valor_hora");
-      const tiempoInvertido = document.getElementById("tiempo_invertido");
-      const valorSugerido = document.getElementById("valor_sugerido");
-      const valorFinal = document.getElementById("valor_final");
-
-      function calcularValores() {
-        const dibujo = parseFloat(valorDibujo.value) || 0;
-        const materiales = parseFloat(valorMateriales.value) || 0;
-        const marco = parseFloat(valorMarco.value) || 0;
-        const hora = parseFloat(valorHora.value) || 0;
-        const tiempo = parseFloat(tiempoInvertido.value) || 0;
-
-        const sugerido = dibujo + materiales + marco + hora * tiempo;
-        valorSugerido.value = sugerido.toFixed(0);
-        valorFinal.value = sugerido.toFixed(0); // Aquí puedes agregar más lógica si el valor final difiere del sugerido
-      }
-
-      valorDibujo.addEventListener("input", calcularValores);
-      valorMateriales.addEventListener("input", calcularValores);
-      valorMarco.addEventListener("input", calcularValores);
-      valorHora.addEventListener("input", calcularValores);
-      tiempoInvertido.addEventListener("input", calcularValores);
-    </script>
 
     <script>
-      // 1. Inicializar base de datos local con Dexie
-      const db = new Dexie("ClientesDB");
+      // ------------------------------
+      // 1) Base de datos local (Dexie)
+      // ------------------------------
+      // Creamos una base sencilla con DOS tablas:
+      // - clientes: datos del cliente
+      // - cuadros: datos del cuadro + clienteId para relacionar
+      const db = new Dexie("GaleriaDB");
       db.version(1).stores({
+        clientes: "++id,whatsapp,nombres,apellidos",
         cuadros:
-          "++id,nombres,apellidos,whatsapp,titulo,descripcion,tamanio,materiales,categoria,fecha_inicio,fecha_finalizacion,tiempo_invertido,detalle,creatividad,complejidad_tecnica,valor_hora,valor_marco,valor_materiales,valor_dibujo,valor_sugerido,valor_final,sincronizado",
+          "++id,clienteId,titulo,categoria,fecha_inicio,fecha_finalizacion,valor_final",
       });
 
-      // 2. Guardar cuadro en local (si existe título, actualizar)
-      document
-        .querySelector("form")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
-          let nombres = document.getElementById("nombres").value;
-          nombres = nombres.toUpperCase();
-          nombres = nombres
-            .replace(/Á/g, "A")
-            .replace(/É/g, "E")
-            .replace(/Í/g, "I")
-            .replace(/Ó/g, "O")
-            .replace(/Ú/g, "U");
-          let apellidos = document.getElementById("apellidos").value;
-          apellidos = apellidos.toUpperCase();
-          apellidos = apellidos
-            .replace(/Á/g, "A")
-            .replace(/É/g, "E")
-            .replace(/Í/g, "I")
-            .replace(/Ó/g, "O")
-            .replace(/Ú/g, "U");
-          let whatsapp = document.getElementById("whatsapp").value;
-          let titulo = document.getElementById("titulo").value;
-          titulo = titulo.toUpperCase();
-          titulo = titulo
-            .replace(/Á/g, "A")
-            .replace(/É/g, "E")
-            .replace(/Í/g, "I")
-            .replace(/Ó/g, "O")
-            .replace(/Ú/g, "U");
-          let descripcion = document.getElementById("descripcion").value;
-          let tamanio = document.getElementById("tamanio").value;
-          let materiales = document.getElementById("materiales").value;
-          let categoria = document.getElementById("categoria").value;
-          let fecha_inicio = document.getElementById("fecha_inicio").value;
-          let fecha_finalizacion =
-            document.getElementById("fecha_finalizacion").value;
-          let tiempo_invertido = parseFloat(
-            document.getElementById("tiempo_invertido").value,
-          );
-          let detalle = parseInt(document.getElementById("detalle").value);
-          let creatividad = parseInt(
-            document.getElementById("creatividad").value,
-          );
-          let complejidad_tecnica = parseInt(
-            document.getElementById("complejidad_tecnica").value,
-          );
-          let valor_hora = parseFloat(
-            document.getElementById("valor_hora").value,
-          );
-          let valor_marco =
-            parseFloat(document.getElementById("valor_marco").value) || 0;
-          let valor_materiales =
-            parseFloat(document.getElementById("valor_materiales").value) || 0;
-          let valor_dibujo =
-            parseFloat(document.getElementById("valor_dibujo").value) || 0;
-          let valor_sugerido =
-            parseFloat(document.getElementById("valor_sugerido").value) || 0;
-          let valor_final =
-            parseFloat(document.getElementById("valor_final").value) || 0;
-          // Buscar si ya existe un cuadro con ese título
-          const existente = await db.cuadros
-            .where("titulo")
-            .equals(titulo)
-            .first();
-          if (existente) {
-            // Actualizar datos existentes
-            await db.cuadros.update(existente.id, {
-              nombres,
-              apellidos,
-              whatsapp,
-              titulo,
-              descripcion,
-              tamanio,
-              materiales,
-              categoria,
-              fecha_inicio,
-              fecha_finalizacion,
-              tiempo_invertido,
-              detalle,
-              creatividad,
-              complejidad_tecnica,
-              valor_hora,
-              valor_marco,
-              valor_materiales,
-              valor_dibujo,
-              valor_sugerido,
-              valor_final,
-              sincronizado: false,
-            });
-            alert("Cuadro actualizado localmente");
-          } else {
-            // Insertar nuevo cuadro
-            await db.cuadros.add({
-              nombres,
-              apellidos,
-              whatsapp,
-              titulo,
-              descripcion,
-              tamanio,
-              materiales,
-              categoria,
-              fecha_inicio,
-              fecha_finalizacion,
-              tiempo_invertido,
-              detalle,
-              creatividad,
-              complejidad_tecnica,
-              valor_hora,
-              valor_marco,
-              valor_materiales,
-              valor_dibujo,
-              valor_sugerido,
-              valor_final,
-              sincronizado: false,
-            });
-            alert("Cuadro guardado localmente");
-          }
-          e.target.reset();
-          // Intentar sincronizar inmediatamente si hay conexión
-          if (navigator.onLine) {
-            sincronizar();
-          }
-        });
-      // 3. Función de sincronización con el servidor
-      async function sincronizar() {
-        // Obtener todos los cuadros pendientes
-        const cuadrosPendientes = await db.cuadros
-          .where("sincronizado")
-          .equals(false)
-          .toArray();
-        for (const cuadro of cuadrosPendientes) {
-          try {
-            // Enviar cuadro a la API
-            const res = await fetch("https://mi-api.com/cuadros", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(cuadro),
-            });
-            if (res.ok) {
-              // Marcar como sincronizado en la base local
-              await db.cuadros.update(cuadro.id, { sincronizado: true });
-              console.log(`Cuadro ${cuadro.titulo} sincronizado`);
-            } else {
-              console.log("Error al sincronizar con API");
-            }
-          } catch (err) {
-            console.log("Sin conexión, se intentará más tarde");
-            return; // salir para que el intervalo vuelva a intentarlo
-          }
-        }
-      }
-      // 4. Al cargar la página, intentar sincronizar
-      window.onload = () => {
-        if (navigator.onLine) {
-          sincronizar();
-        }
+      // ------------------------------
+      // 2) Referencias a elementos HTML
+      // ------------------------------
+      // Guardamos cada input en una variable para usarlo varias veces.
+      const form = document.getElementById("cuadroForm");
+      const btnNuevo = document.getElementById("btnNuevo");
+      const btnGuardar = document.getElementById("btnGuardar");
+      const cuadroIdInput = document.getElementById("cuadroId");
+
+      const nombresInput = document.getElementById("nombres");
+      const apellidosInput = document.getElementById("apellidos");
+      const whatsappInput = document.getElementById("whatsapp");
+
+      const tituloInput = document.getElementById("titulo");
+      const descripcionInput = document.getElementById("descripcion");
+      const tamanioInput = document.getElementById("tamanio");
+      const materialesInput = document.getElementById("materiales");
+      const categoriaInput = document.getElementById("categoria");
+      const fechaInicioInput = document.getElementById("fecha_inicio");
+      const fechaFinalizacionInput = document.getElementById(
+        "fecha_finalizacion",
+      );
+
+      const tiempoInvertidoInput = document.getElementById("tiempo_invertido");
+      const detalleInput = document.getElementById("detalle");
+      const creatividadInput = document.getElementById("creatividad");
+      const complejidadTecnicaInput = document.getElementById(
+        "complejidad_tecnica",
+      );
+
+      const valorHoraInput = document.getElementById("valor_hora");
+      const valorMarcoInput = document.getElementById("valor_marco");
+      const valorMaterialesInput = document.getElementById("valor_materiales");
+      const valorDibujoInput = document.getElementById("valor_dibujo");
+      const valorSugeridoInput = document.getElementById("valor_sugerido");
+      const valorFinalInput = document.getElementById("valor_final");
+
+      // ------------------------------------------
+      // 3) Estado en memoria (lo minimo necesario)
+      // ------------------------------------------
+      // Esto evita usar localStorage y evita que quede pegada
+      // la ultima edicion cuando abres el formulario de nuevo.
+      const estado = {
+        cuadroId: null,
+        clienteId: null,
+        creadoEn: null,
       };
-      // 5. Detectar cuando vuelve la conexión
-      window.addEventListener("online", () => {
-        console.log("Conexión restaurada, sincronizando...");
-        sincronizar();
-      });
-      // 6. Reintentos automáticos cada 1 minuto
-      setInterval(() => {
-        if (navigator.onLine) {
-          sincronizar();
+
+      // ------------------------------------------
+      // 4) Calculo automatico del valor sugerido
+      // ------------------------------------------
+      // Sumamos dibujo + materiales + marco + (hora * tiempo).
+      function calcularValores() {
+        const dibujo = parseFloat(valorDibujoInput.value) || 0;
+        const materiales = parseFloat(valorMaterialesInput.value) || 0;
+        const marco = parseFloat(valorMarcoInput.value) || 0;
+        const hora = parseFloat(valorHoraInput.value) || 0;
+        const tiempo = parseFloat(tiempoInvertidoInput.value) || 0;
+        const sugerido = dibujo + materiales + marco + hora * tiempo;
+
+        // El valor sugerido siempre lo calculamos.
+        valorSugeridoInput.value = sugerido.toFixed(0);
+
+        // Si el valor final esta vacio, lo llenamos igual al sugerido.
+        if (!valorFinalInput.value) {
+          valorFinalInput.value = sugerido.toFixed(0);
         }
-      }, 60000);
-
-      const editarId = localStorage.getItem("editarCuadroId");
-
-      if (editarId) {
-        db.cuadros.get(Number(editarId)).then((c) => {
-          for (const key in c) {
-            if (document.getElementById(key)) {
-              document.getElementById(key).value = c[key];
-            }
-          }
-        });
       }
+
+      // Recalculamos cuando cambian los inputs relevantes.
+      valorDibujoInput.addEventListener("input", calcularValores);
+      valorMaterialesInput.addEventListener("input", calcularValores);
+      valorMarcoInput.addEventListener("input", calcularValores);
+      valorHoraInput.addEventListener("input", calcularValores);
+      tiempoInvertidoInput.addEventListener("input", calcularValores);
+
+      // ------------------------------------------
+      // 5) Helpers para limpiar y cargar formulario
+      // ------------------------------------------
+      function limpiarFormulario() {
+        // Resetea inputs visualmente.
+        form.reset();
+
+        // Resetea el estado en memoria.
+        estado.cuadroId = null;
+        estado.clienteId = null;
+        estado.creadoEn = null;
+        cuadroIdInput.value = "";
+
+        // Cambia el texto del boton para dejar claro que es un alta nueva.
+        btnGuardar.textContent = "Guardar";
+
+        // Borra el parametro ?id de la URL para evitar re-ediciones.
+        history.replaceState({}, "", "registrar_cuadro.html");
+      }
+
+      function cargarFormulario(cuadro, cliente) {
+        // Guardamos estado para saber que estamos editando.
+        estado.cuadroId = cuadro.id;
+        estado.clienteId = cuadro.clienteId;
+        estado.creadoEn = cuadro.creadoEn || null;
+        cuadroIdInput.value = cuadro.id;
+
+        // Cliente
+        nombresInput.value = cliente?.nombres || "";
+        apellidosInput.value = cliente?.apellidos || "";
+        whatsappInput.value = cliente?.whatsapp || "";
+
+        // Cuadro
+        tituloInput.value = cuadro.titulo || "";
+        descripcionInput.value = cuadro.descripcion || "";
+        tamanioInput.value = cuadro.tamanio || "";
+        materialesInput.value = cuadro.materiales || "";
+        categoriaInput.value = cuadro.categoria || "";
+        fechaInicioInput.value = cuadro.fecha_inicio || "";
+        fechaFinalizacionInput.value = cuadro.fecha_finalizacion || "";
+
+        // Valoracion
+        tiempoInvertidoInput.value = cuadro.tiempo_invertido || "";
+        detalleInput.value = cuadro.detalle || "";
+        creatividadInput.value = cuadro.creatividad || "";
+        complejidadTecnicaInput.value = cuadro.complejidad_tecnica || "";
+
+        // Precios
+        valorHoraInput.value = cuadro.valor_hora || "";
+        valorMarcoInput.value = cuadro.valor_marco || "";
+        valorMaterialesInput.value = cuadro.valor_materiales || "";
+        valorDibujoInput.value = cuadro.valor_dibujo || "";
+        valorSugeridoInput.value = cuadro.valor_sugerido || "";
+        valorFinalInput.value = cuadro.valor_final || "";
+
+        // Cambiamos el texto del boton para indicar edicion.
+        btnGuardar.textContent = "Actualizar";
+      }
+
+      // ------------------------------------------
+      // 6) Crear o actualizar cliente
+      // ------------------------------------------
+      async function upsertCliente() {
+        const clienteData = {
+          nombres: nombresInput.value.trim(),
+          apellidos: apellidosInput.value.trim(),
+          whatsapp: whatsappInput.value.trim(),
+        };
+
+        // Si estamos editando, actualizamos el cliente directo por ID.
+        if (estado.clienteId) {
+          await db.clientes.update(estado.clienteId, clienteData);
+          return estado.clienteId;
+        }
+
+        // Si es nuevo, intentamos reutilizar por whatsapp.
+        const existente = await db.clientes
+          .where("whatsapp")
+          .equals(clienteData.whatsapp)
+          .first();
+
+        if (existente) {
+          await db.clientes.update(existente.id, clienteData);
+          return existente.id;
+        }
+
+        // Si no existe, lo creamos y devolvemos su ID.
+        return await db.clientes.add(clienteData);
+      }
+
+      // ------------------------------------------
+      // 7) Guardar cuadro (crear o actualizar)
+      // ------------------------------------------
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Primero nos aseguramos de tener un cliente creado.
+        const clienteId = await upsertCliente();
+
+        // Armamos el objeto cuadro con todos los datos.
+        const cuadroData = {
+          clienteId,
+          titulo: tituloInput.value.trim(),
+          descripcion: descripcionInput.value.trim(),
+          tamanio: tamanioInput.value.trim(),
+          materiales: materialesInput.value.trim(),
+          categoria: categoriaInput.value,
+          fecha_inicio: fechaInicioInput.value,
+          fecha_finalizacion: fechaFinalizacionInput.value,
+          tiempo_invertido: parseFloat(tiempoInvertidoInput.value) || 0,
+          detalle: parseInt(detalleInput.value, 10) || 0,
+          creatividad: parseInt(creatividadInput.value, 10) || 0,
+          complejidad_tecnica: parseInt(complejidadTecnicaInput.value, 10) || 0,
+          valor_hora: parseFloat(valorHoraInput.value) || 0,
+          valor_marco: parseFloat(valorMarcoInput.value) || 0,
+          valor_materiales: parseFloat(valorMaterialesInput.value) || 0,
+          valor_dibujo: parseFloat(valorDibujoInput.value) || 0,
+          valor_sugerido: parseFloat(valorSugeridoInput.value) || 0,
+          valor_final: parseFloat(valorFinalInput.value) || 0,
+          creadoEn: estado.creadoEn || new Date().toISOString(),
+          actualizadoEn: new Date().toISOString(),
+        };
+
+        // Si hay cuadroId, actualizamos. Si no, creamos uno nuevo.
+        if (estado.cuadroId) {
+          await db.cuadros.update(estado.cuadroId, cuadroData);
+          alert("Cuadro actualizado");
+        } else {
+          await db.cuadros.add(cuadroData);
+          alert("Cuadro creado");
+        }
+
+        // Limpiamos para dejar el formulario listo para un nuevo registro.
+        limpiarFormulario();
+      });
+
+      // ------------------------------------------
+      // 8) Cargar cuadro si viene ?id= en la URL
+      // ------------------------------------------
+      async function cargarEdicionDesdeURL() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        if (!id) return;
+
+        // Buscamos el cuadro y su cliente asociado.
+        const cuadro = await db.cuadros.get(Number(id));
+        if (!cuadro) return;
+        const cliente = await db.clientes.get(cuadro.clienteId);
+
+        // Cargamos todo en el formulario.
+        cargarFormulario(cuadro, cliente);
+      }
+
+      // ------------------------------------------
+      // 9) Boton "Nuevo" para limpiar rapido
+      // ------------------------------------------
+      btnNuevo.addEventListener("click", limpiarFormulario);
+
+      // ------------------------------------------
+      // 10) Ejecutar al cargar la pagina
+      // ------------------------------------------
+      cargarEdicionDesdeURL();
     </script>
   </body>
 </html>

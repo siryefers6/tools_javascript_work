@@ -5,6 +5,7 @@
     <title>Ver Cuadros</title>
 
     <script src="dexie.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -22,19 +23,27 @@
     </div>
 
     <div class="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h1 class="text-3xl font-bold text-center mb-6">Cuadros Registrados</h1>
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold">Cuadros Registrados</h1>
+        <button
+          type="button"
+          hx-on="click: mostrarCuadros()"
+          class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
+        >
+          Actualizar
+        </button>
+      </div>
 
       <div class="overflow-x-auto">
         <table id="tablaCuadros" class="min-w-full border">
           <thead class="bg-gray-200">
             <tr>
               <th class="p-2 border">ID</th>
-              <th class="p-2 border">Título</th>
+              <th class="p-2 border">Titulo</th>
               <th class="p-2 border">Cliente</th>
-              <th class="p-2 border">Tamaño</th>
-              <th class="p-2 border">Categoría</th>
+              <th class="p-2 border">Tamano</th>
+              <th class="p-2 border">Categoria</th>
               <th class="p-2 border">Valor Final</th>
-              <th class="p-2 border">Estado</th>
               <th class="p-2 border">Acciones</th>
             </tr>
           </thead>
@@ -44,51 +53,67 @@
     </div>
 
     <script>
-      /* DB */
-      const db = new Dexie("ClientesDB");
+      const db = new Dexie("GaleriaDB");
       db.version(1).stores({
         cuadros:
-          "++id,nombres,apellidos,whatsapp,titulo,descripcion,tamanio,materiales,categoria,fecha_inicio,fecha_finalizacion,tiempo_invertido,detalle,creatividad,complejidad_tecnica,valor_hora,valor_marco,valor_materiales,valor_dibujo,valor_sugerido,valor_final,sincronizado",
+          "++id,nombres,apellidos,whatsapp,titulo,tamanio,categoria,fecha_inicio,valor_final,updatedAt",
       });
 
-      /* Listar */
       async function mostrarCuadros() {
-        const cuadros = await db.cuadros.toArray();
+        const cuadros = await db.cuadros.orderBy("updatedAt").reverse().toArray();
         const tbody = document.querySelector("#tablaCuadros tbody");
         tbody.innerHTML = "";
 
         cuadros.forEach((c) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-          <td class="p-2 border">${c.id}</td>
-          <td class="p-2 border">${c.titulo}</td>
-          <td class="p-2 border">${c.nombres} ${c.apellidos}</td>
-          <td class="p-2 border">${c.tamanio}</td>
-          <td class="p-2 border">${c.categoria}</td>
-          <td class="p-2 border">$${c.valor_final}</td>
-          <td class="p-2 border">
-            ${c.sincronizado ? "Sincronizado" : "Pendiente"}
-          </td>
-          <td class="p-2 border text-center">
-            <button
-              onclick="editarCuadro(${c.id})"
-              class="bg-yellow-500 text-white px-3 py-1 rounded"
-            >
-              Editar
-            </button>
-          </td>
-        `;
+            <td class="p-2 border">${c.id}</td>
+            <td class="p-2 border">${c.titulo || ""}</td>
+            <td class="p-2 border">${c.nombres || ""} ${c.apellidos || ""}</td>
+            <td class="p-2 border">${c.tamanio || ""}</td>
+            <td class="p-2 border">${c.categoria || ""}</td>
+            <td class="p-2 border">${c.valor_final ?? ""}</td>
+            <td class="p-2 border text-center">
+              <button
+                class="bg-yellow-500 text-white px-3 py-1 rounded mr-2"
+                data-id="${c.id}"
+              >Editar</button>
+              <button
+                class="bg-red-600 text-white px-3 py-1 rounded"
+                data-id="${c.id}"
+              >Eliminar</button>
+            </td>
+          `;
+          tr.querySelector("button.bg-yellow-500").addEventListener(
+            "click",
+            () => editarCuadro(c.id),
+          );
+          tr.querySelector("button.bg-red-600").addEventListener("click", () =>
+            eliminarCuadro(c.id),
+          );
           tbody.appendChild(tr);
         });
+
+        if (!cuadros.length) {
+          const tr = document.createElement("tr");
+          tr.innerHTML =
+            '<td colspan="7" class="p-4 text-center text-gray-500">Sin registros</td>';
+          tbody.appendChild(tr);
+        }
       }
 
-      /* Editar → reutiliza registrar_cuadro.html */
       function editarCuadro(id) {
-        localStorage.setItem("editarCuadroId", id);
-        window.location.href = "registrar_cuadro.html";
+        window.location.href = `registrar_cuadro.html?id=${id}`;
       }
 
-      window.onload = mostrarCuadros;
+      async function eliminarCuadro(id) {
+        const confirmar = confirm("Eliminar este cuadro?");
+        if (!confirmar) return;
+        await db.cuadros.delete(id);
+        mostrarCuadros();
+      }
+
+      mostrarCuadros();
     </script>
   </body>
 </html>

@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Lista de Clientes</title>
-    <!-- Dexie.js desde CDN -->
     <script src="dexie.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -21,20 +21,17 @@
     <div
       class="flex flex-col mb-4 max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg"
     >
-      <h1 class="text-4xl font-extrabold text-center my-4 text-gray-800">
-        Clientes Registrados 📋
-      </h1>
-      <!-- Botón para refrescar la lista -->
-      <div class="flex justify-end mb-4">
+      <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-bold text-gray-800">Clientes Registrados</h1>
         <button
-          onclick="mostrarClientes()"
-          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 shadow-md"
+          type="button"
+          hx-on="click: mostrarClientes()"
+          class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
         >
           Actualizar lista
         </button>
       </div>
-      <!-- Tabla donde se mostrarán los clientes -->
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto mt-4">
         <table
           id="tablaClientes"
           class="min-w-full bg-white border border-gray-300"
@@ -52,7 +49,7 @@
                 Whatsapp
               </th>
               <th class="py-3 px-6 border-b border-gray-300 text-left">
-                Estado
+                Ultimo cuadro
               </th>
             </tr>
           </thead>
@@ -61,46 +58,46 @@
       </div>
     </div>
     <script>
-      // 1. Conectar a la misma base de datos usada en index.html
-      const db = new Dexie("ClientesDB");
+      const db = new Dexie("GaleriaDB");
       db.version(1).stores({
-        cuadros: "++id,nombres,apellidos,whatsapp,sincronizado",
+        cuadros:
+          "++id,nombres,apellidos,whatsapp,titulo,tamanio,categoria,fecha_inicio,valor_final,updatedAt",
       });
 
-      // 2. Función para mostrar clientes en la tabla
       async function mostrarClientes() {
-        // Obtener todos los clientes guardados
-        const clientes = await db.cuadros.toArray();
+        const cuadros = await db.cuadros.orderBy("updatedAt").reverse().toArray();
         const tbody = document.querySelector("#tablaClientes tbody");
-        tbody.innerHTML = ""; // limpiar tabla
+        tbody.innerHTML = "";
 
-        // Recorrer clientes y crear filas
-        clientes.forEach((c) => {
+        const vistos = new Map();
+        cuadros.forEach((c) => {
+          const llave = c.whatsapp || `${c.nombres || ""}-${c.apellidos || ""}`;
+          if (!vistos.has(llave)) {
+            vistos.set(llave, c);
+          }
+        });
+
+        Array.from(vistos.values()).forEach((c) => {
           const fila = document.createElement("tr");
           fila.classList.add("hover:bg-gray-100");
           fila.innerHTML = `
-          <td class="py-3 px-6 border-b border-gray-300">${c.id}</td>
-          <td class="py-3 px-6 border-b border-gray-300">${c.nombres}</td>
-          <td class="py-3 px-6 border-b border-gray-300">${c.apellidos}</td>
-          <td class="py-3 px-6 border-b border-gray-300">${c.whatsapp}</td>
-          <td class="py-3 px-6 border-b border-gray-300 ${
-            c.sincronizado ? "text-green-600" : "text-red-600"
-          }">
-            ${c.sincronizado ? "Sincronizado" : "Pendiente"}
-          </td>
-        `;
+            <td class="py-3 px-6 border-b border-gray-300">${c.id}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${c.nombres || ""}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${c.apellidos || ""}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${c.whatsapp || ""}</td>
+            <td class="py-3 px-6 border-b border-gray-300">${c.titulo || ""}</td>
+          `;
           tbody.appendChild(fila);
         });
 
-        // Si no hay clientes, mostrar mensaje
-        if (clientes.length === 0) {
+        if (!vistos.size) {
           const fila = document.createElement("tr");
-          fila.innerHTML = `<td colspan="5" class="py-3 px-6 text-center">No hay clientes registrados</td>`;
+          fila.innerHTML =
+            '<td colspan="5" class="py-3 px-6 text-center">No hay clientes registrados</td>';
           tbody.appendChild(fila);
         }
       }
 
-      // 3. Mostrar clientes automáticamente al abrir la página
       mostrarClientes();
     </script>
   </body>

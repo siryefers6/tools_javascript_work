@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro Cuadros</title>
-    <script src="https://cdn.jsdelivr.net/npm/dexie@4.0.1/dist/dexie.min.js"></script>
+    <script src="dexie.min.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -40,7 +40,6 @@
           type="text"
           id="apellidos"
           name="apellidos"
-          required
           class="border border-gray-300 p-3 rounded-lg w-full"
         />
 
@@ -68,7 +67,6 @@
         <textarea
           id="descripcion"
           name="descripcion"
-          required
           class="border border-gray-300 p-3 rounded-lg w-full h-24"
         ></textarea>
 
@@ -129,7 +127,6 @@
               type="date"
               id="fecha_finalizacion"
               name="fecha_finalizacion"
-              required
               class="border border-gray-300 p-3 rounded-lg w-full"
             />
           </div>
@@ -141,7 +138,6 @@
           type="number"
           id="tiempo_invertido"
           name="tiempo_invertido"
-          required
           class="border border-gray-300 p-3 rounded-lg w-full"
         />
 
@@ -163,7 +159,6 @@
         <select
           id="creatividad"
           name="creatividad"
-          required
           class="border border-gray-300 p-3 rounded-lg w-full"
         >
           <option value="" disabled selected>Seleccione un Nivel (1-5)</option>
@@ -178,7 +173,6 @@
         <select
           id="complejidad_tecnica"
           name="complejidad_tecnica"
-          required
           class="border border-gray-300 p-3 rounded-lg w-full"
         >
           <option value="" disabled selected>Seleccione un Nivel (1-5)</option>
@@ -196,7 +190,6 @@
           type="number"
           id="valor_hora"
           name="valor_hora"
-          required
           class="border border-gray-300 p-3 rounded-lg w-full"
         />
 
@@ -453,6 +446,18 @@
           sincronizar();
         }
       }, 60000);
+
+      const editarId = localStorage.getItem("editarCuadroId");
+
+      if (editarId) {
+        db.cuadros.get(Number(editarId)).then((c) => {
+          for (const key in c) {
+            if (document.getElementById(key)) {
+              document.getElementById(key).value = c[key];
+            }
+          }
+        });
+      }
     </script>
   </body>
 </html>
